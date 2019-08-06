@@ -20,16 +20,19 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "Cell")
-        var cellLabel = ""
-        
-        
-        if let tempLabel = items[indexPath.row] {
-            cellLabel = tempLabel
-        }
-        
-        cell.textLabel?.text = cellLabel
+        cell.textLabel?.text = items[indexPath.row]
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            items.remove(at: indexPath.row)
+            table.reloadData()
+            UserDefaults.standard.set(items, forKey: "items")
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +45,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             items = tempItems
         }
         
-        print(items)
-        
         table.reloadData()
     }
+    
 
 
 }
